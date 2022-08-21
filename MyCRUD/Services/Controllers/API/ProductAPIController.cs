@@ -95,5 +95,21 @@ namespace Services.Controllers.API
             }
             return true;
         }
+        [HttpDelete]
+        [Route("{ProductId}")]
+        public bool DeleteProductInfo(int ProductId)
+        {
+            var DeleteItem = _northWind.MyProducts.FirstOrDefault(p => p.ProductId == ProductId);
+            _northWind.Remove(DeleteItem);
+            try
+            {
+                _northWind.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
