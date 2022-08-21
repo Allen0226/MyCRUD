@@ -27,5 +27,26 @@ namespace Services.Controllers.API
                 LaunchDate = p.LaunchDate.ToString("G")
             }).ToList();
         }
+        [HttpPost]
+        public bool CreateProduct(CreatePorductViewModel NewProduct)
+        {
+            var item = new MyProduct()
+            {
+                ProductName = NewProduct.ProductName,
+                UnitPrice = NewProduct.Price,
+                UnitsInStock = NewProduct.Stock,
+                LaunchDate = DateTime.Now,
+            };
+            _northWind.Add(item);
+            try
+            {
+                _northWind.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

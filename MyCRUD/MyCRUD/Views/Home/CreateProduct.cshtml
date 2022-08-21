@@ -40,7 +40,7 @@
                 AddProduct: function () {
                     console.log(CreateItem.NewProduct);
                     $.ajax({
-                        url: "/api/Product/CreateProduct",
+                        url: "https://localhost:5001/api/Product/CreateProduct",
                         type: "POST",
                         data: JSON.stringify(CreateItem.NewProduct),
                         dataType: "json",
