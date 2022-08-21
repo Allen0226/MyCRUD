@@ -16,7 +16,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-
+builder.Services.AddCors(
+    (options) =>
+    {
+        options.AddPolicy("MyCRUD",
+            (builder) =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+    }
+    );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +41,7 @@ app.UseSession();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors("MyCRUD");
 app.MapControllers();
 
 app.Run();

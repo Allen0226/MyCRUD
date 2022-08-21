@@ -71,7 +71,7 @@
             },
             methods: {
                 GetProductInfo: function() {
-                    fetch("/api/Product/GetProductInfo")
+                    fetch("https://localhost:5001/api/Product/GetProductInfo")
                     .then(response => response.json())
                     .then(result => {
                         vm.productlist = result
