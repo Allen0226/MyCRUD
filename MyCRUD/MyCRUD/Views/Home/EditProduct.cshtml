@@ -35,7 +35,7 @@
             methods: {
                 EditProductInfo: function () {
                     $.ajax({
-                        url: "/api/Product/EditProduct",
+                        url: "https://localhost:5001/api/Product/EditProduct",
                         type: "PUT",
                         data: JSON.stringify(EditItem.EditProduct),
                         dataType: "json",
@@ -50,10 +50,13 @@
                 }
             },
             mounted: function () {
-                $.ajax({
-                    type: "GET",
-                    url: "/api/Product/GetEditProductInfo"
-                }).done(res => EditItem.EditProduct = res)
+
+                fetch("https://localhost:5001/api/Product/GetEditProductInfo/" + location.search.replace("?id=", "")
+                 )
+                    .then(response => response.json())
+                    .then(result => {
+                        EditItem.EditProduct = result
+                    });
             }
 
         }).$mount("#EditProduct")

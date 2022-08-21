@@ -78,21 +78,13 @@
                     });
                 },
                 EditProduct: function(item) {
-                    $.ajax({
-                        type:"GET",
-                        url:`/api/Product/EditProductInfo/${item.productId}`,
-                    }).done(res => {
-                        if (res) {
-                            window.location.href = "/home/EditProduct";
-                        } else {
-                            alert("無法編輯");
-                        }
-                    })
+                    window.location.href = `/home/EditProduct?id=${item.productId}`;
+                    
                 },
                 DeleteProduct: function(item) {
                     $.ajax({
                         type:"DELETE",
-                        url:`/api/Product/DeleteProductInfo/${item.productId}`,
+                        url: `https://localhost:5001/api/Product/DeleteProductInfo/${item.productId}`,
                     }).done(res => {
                         if (res) {
                             vm.GetProductInfo();
