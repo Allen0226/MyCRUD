@@ -1,0 +1,60 @@
+﻿<div class="container">
+    <h3>新增商品</h3>
+    <hr />
+    <br />
+    <div id="CreateProduct">
+        <div class="row">
+            <div class="col-md-4">
+                <label>商品名稱</label>
+                <input class="form-control" v-model=NewProduct.ProductName />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>商品單價</label>
+                <input class="form-control" v-model=NewProduct.Price />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>庫存量</label>
+                <input class="form-control" v-model=NewProduct.Stock />
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary" v-on:click="AddProduct">新增商品</button>
+        <a class="btn btn-default" href="/home/ProductIndex">Cancel</a>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var CreateItem = new Vue({
+            data: {
+                NewProduct: {
+                    ProductName: "",
+                    Price: null,
+                    Stock: null
+                }
+            },
+            methods: {
+                AddProduct: function () {
+                    console.log(CreateItem.NewProduct);
+                    $.ajax({
+                        url: "/api/Product/CreateProduct",
+                        type: "POST",
+                        data: JSON.stringify(CreateItem.NewProduct),
+                        dataType: "json",
+                        contentType: "application/json",
+                    }).done(res => {
+                        if (res) {
+                            window.location.href = "/home/ProductIndex";
+                        } else {
+                            alert("新增失敗");
+                        }
+                    })
+                }
+            }
+
+        }).$mount("#CreateProduct")
+    </script>
+}

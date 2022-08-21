@@ -22,7 +22,18 @@ namespace MyCRUD.Controllers
         {
             return View();
         }
-
+        public IActionResult ProductIndex()
+        {
+            return View();
+        }
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        public IActionResult EditProduct()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

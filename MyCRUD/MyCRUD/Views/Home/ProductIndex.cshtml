@@ -1,0 +1,110 @@
+﻿<div class="contanier mx-5 pt-5 h-100" id="ProductManage">
+    <div class="tab-pane fade bg-light show active" id="product" role="tabpanel" aria-labelledby="product-tab">
+        <div class="contanier mx-5 pt-5">
+            <div class="row mb-2 d-flex ">
+                <div class="col col-2">
+                    <a class="btn btn-success" href="/home/CreateProduct">
+                        新增商品
+                    </a>
+                </div>
+            </div>
+            <table class="table table-light table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">商品編號</th>
+                        <th scope="col">商品名稱</th>
+                        <th scope="col">
+                            商品單價
+                        </th>
+                        <th scope="col">
+                            庫存量
+                        </th>
+                        <th scope="col">
+                            上架時間
+                        </th>
+                        <th scope="col">修改商品資訊</th>
+                        <th scope="col">下架商品</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in productlist">
+                        <td>
+                            <p class="text-truncate">{{item.productId}}</p>
+                        </td>
+                        <td>
+                            <p class="text-truncate" style="width: 200px;">{{item.productName}}</p>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                {{item.price}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center unitsInStock">
+                                {{item.stock}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center unitsInStock">
+                                {{item.launchDate}}
+                            </div>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" v-on:click="EditProduct(item)">修改</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" type="submit" v-on:click="DeleteProduct(item)">
+                                下架
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var vm = new Vue({
+            data: {
+                productlist: [],
+            },
+            methods: {
+                GetProductInfo: function() {
+                    fetch("/api/Product/GetProductInfo")
+                    .then(response => response.json())
+                    .then(result => {
+                        vm.productlist = result
+                    });
+                },
+                EditProduct: function(item) {
+                    $.ajax({
+                        type:"GET",
+                        url:`/api/Product/EditProductInfo/${item.productId}`,
+                    }).done(res => {
+                        if (res) {
+                            window.location.href = "/home/EditProduct";
+                        } else {
+                            alert("無法編輯");
+                        }
+                    })
+                },
+                DeleteProduct: function(item) {
+                    $.ajax({
+                        type:"DELETE",
+                        url:`/api/Product/DeleteProductInfo/${item.productId}`,
+                    }).done(res => {
+                        if (res) {
+                            vm.GetProductInfo();
+                        } else {
+                            alert("無法下架商品");
+                        }
+                    })
+                }
+            },
+            mounted: function() {
+                this.GetProductInfo();
+            }
+        }).$mount("#ProductManage")
+    </script>
+}

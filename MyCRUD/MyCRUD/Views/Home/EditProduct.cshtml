@@ -1,0 +1,61 @@
+﻿<div class="container">
+    <h3>編輯商品</h3>
+    <hr />
+    <br />
+    <div id="EditProduct">
+        <div class="row">
+            <div class="col-md-4">
+                <label>商品名稱</label>
+                <input class="form-control" v-model=EditProduct.name />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>商品單價</label>
+                <input class="form-control" v-model=EditProduct.price />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>庫存量</label>
+                <input class="form-control" v-model=EditProduct.stock />
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary" v-on:click="EditProductInfo">修改商品</button>
+        <a class="btn btn-default" href="/home/ProductIndex">Cancel</a>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var EditItem = new Vue({
+            data: {
+                EditProduct: {}
+            },
+            methods: {
+                EditProductInfo: function () {
+                    $.ajax({
+                        url: "/api/Product/EditProduct",
+                        type: "PUT",
+                        data: JSON.stringify(EditItem.EditProduct),
+                        dataType: "json",
+                        contentType: "application/json",
+                    }).done(res => {
+                        if (res) {
+                            window.location.href = "/home/ProductIndex";
+                        } else {
+                            alert("修改失敗");
+                        }
+                    })
+                }
+            },
+            mounted: function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/Product/GetEditProductInfo"
+                }).done(res => EditItem.EditProduct = res)
+            }
+
+        }).$mount("#EditProduct")
+    </script>
+}
